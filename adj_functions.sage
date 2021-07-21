@@ -198,3 +198,36 @@ def strcospec(a,b,idems):
     if cospec(a,b,idems) and parallel(a,b,idems):
         return True
     return False
+    
+################################################################################
+# Function: transfer_plots                                                     #
+#                                                                              #
+# Purpose: list plots for each entry of transfer matrix from 0 to 3pi          #
+#                                                                              #
+# Arguments:                                                                   #
+#   A        Hermitian sage or numpy matrix     adjacency matrix/Hamiltonian   #
+#   s        character                          choose 'r','i', or 'a'         #
+#                                               for real, imaginary, or abs    #
+#                                                                              #
+# Returns: absolute value of U(t) at index [i][j]                              #
+#                                                                              #
+################################################################################
+
+def transfer_plots(A,s):
+    A = np.matrix(A)
+    n = len(A)
+    plots = []
+    if s == 'r':
+        for i in range(n):
+            for j in range(n):
+                plots.append(plot(transfer_at_time_r(A,x,i,j),0,3*np.pi))
+    elif s == 'i':
+        for i in range(n):
+            for j in range(n):
+                plots.append(plot(transfer_at_time_i(A,x,i,j),0,3*np.pi))
+    else:
+        for i in range(n):
+            for j in range(n):
+                plots.append(plot(transfer_at_time_a(A,x,i,j),0,3*np.pi))
+    chunks = [plots[x:x+n] for x in range(0, len(plots), n)]
+    return chunks
