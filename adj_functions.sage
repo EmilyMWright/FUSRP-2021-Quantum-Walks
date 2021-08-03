@@ -1,3 +1,4 @@
+# %load adj_functions.sage
 import numpy as np
 from numpy import linalg
 
@@ -17,14 +18,15 @@ def idempotents(A):
     if not matrix(A).is_hermitian():
         print("A is not Hermitian")
         return []
+    # Converts out to complex entries (rather than symbolic)
+    A = matrix(CDF, A)
     # Extracts eigenvalues and eigenvectors
     W,V = linalg.eigh(A)
     # Converts eigenvectors into orthonormal basis
     Q, R = linalg.qr(V) 
     Q = matrix(Q)
     # Number of eigenvectors
-    A = np.matrix(A)
-    n = len(A)
+    n = A.nrows()
     idems = []
     evals = []
     i = 0
@@ -63,10 +65,12 @@ def transfer(A, t):
     if not matrix(A).is_hermitian():
         print("A is not Hermitian")
         return []
+    # Converts out to complex entries (rather than symbolic)
+    A = matrix(CDF, A)
+    # Gets idempotents
     idems, evals = idempotents(A)
     # Number of eigenvectors
-    A = np.matrix(A)
-    n = len(A)
+    n = A.nrows()
     # Zero matrix
     U = matrix(n, n, 0)
     for i in range(len(idems)):
